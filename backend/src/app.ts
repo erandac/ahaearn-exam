@@ -1,13 +1,16 @@
-import express, { Application, Request, Response } from 'express'
+import config from 'config'
+import * as api from './api'
+import { createServer } from './startup/server'
+import path from 'path'
+import { Server } from 'http';
 
-const app: Application = express()
+const swaggerSpecPath = path.resolve(__dirname, '..', 'config', 'openapi.yml')
 
-const port: number = 3001
+export async function appServer(): Promise<Server> {
+    const app = await createServer(swaggerSpecPath, api)
+    const port = process.env.PORT || config.get("serverPort");
+    return app.listen(port, () => {
+        console.log(`App is listening on port ${port} !`)
+    })
+}
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello from ahaearn project')
-})
-
-app.listen(port, function () {
-    console.log(`App is listening on port ${port} !`)
-})
