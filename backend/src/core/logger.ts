@@ -1,4 +1,5 @@
 import winston from 'winston'
+import config from 'config'
 
 const prettyJson = winston.format.printf(info => {
     if (info.message.constructor === Object) {
@@ -8,7 +9,7 @@ const prettyJson = winston.format.printf(info => {
 })
 
 const logger = winston.createLogger({
-
+    level: config.has('logLevel') ? config.get('logLevel') : 'error',
     format: winston.format.combine(
         winston.format.colorize(),
         winston.format.prettyPrint(),

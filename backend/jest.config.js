@@ -3,6 +3,6 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   moduleNameMapper: {
-    "@ahaearn/(.*)": "<rootDir>/src/$1"
+    "@earnaha/(.*)": "<rootDir>/src/$1"
   },
 };

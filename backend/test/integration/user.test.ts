@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { appServer } from '@ahaearn/app'
+import { appServer } from '@earnaha/app'
 import { Server } from 'http'
 
 let server: Server

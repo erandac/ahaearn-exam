@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `earnaha_testing`;
+CREATE DATABASE IF NOT EXISTS `earnaha_dev`;
