@@ -19,10 +19,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/User'
 
+  /user/register-internal-auth:
+    post:
+      tags:
+        - root
+      summary: Register new user with email and passward
+      description: Register new user and TODO
+      operationId: registerInternal
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 servers:
   - url: /api/v1
 components:
   schemas:
+
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorItem'
+
+    ErrorItem:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: string
+
+    UserRegistration:
+      type: object
+      required: [email, firstName, lastName, password, termAndPolicy]
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        password:
+          type: string
+        termAndPolicy: 
+          type: boolean
+
     User:
       type: object
       properties:
@@ -31,6 +90,7 @@ components:
           format: int64
         name:
           type: string
+
     ArrayOfUsers:
       type: array
       items:

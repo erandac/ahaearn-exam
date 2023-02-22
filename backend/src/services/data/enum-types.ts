@@ -8,3 +8,7 @@ export enum EmailStatusTypes {
     Pennding = 'PENDING',
     Validated = 'VALIDATED'
 }
+
+export enum EmailVerificationTypes {
+    ForgotPassword = 'FORGOT_PASSWORD'
+}

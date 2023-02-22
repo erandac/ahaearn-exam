@@ -1,15 +1,15 @@
 import { dbContext } from '@earnaha/persistence'
 import config from 'config'
 
-export function ensureSchemaSync() {
+export async function ensureSchemaSync() {
     if (config.has('dbSyncOnStartup')) {
 
         switch (config.get('dbSyncOnStartup')) {
             case 'force':
-                dbContext.sync({ force: true })
+                await dbContext.sync({ force: true })
                 break;
             case 'partial':
-                dbContext.sync()
+                await dbContext.sync()
                 break
         }
     }

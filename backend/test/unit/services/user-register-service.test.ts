@@ -15,7 +15,7 @@ describe('register new user', () => {
         const findOneMock = jest.spyOn(userRepo, 'findOne')
         const dummyUser = Promise.resolve(new User());
         findOneMock.mockReturnValue(dummyUser)
-        const service = new UserRegisterService(userRepo, new EmailVerificationService())
+        const service = new UserRegisterService(userRepo, EmailVerificationService.Factory())
         const newRegistration = new UserRegistration("Eranda", "Nandasena", "testuser@test.com", AuthProviderTypes.Internal, "PasswordHash")
 
         await expect(async () => {
@@ -25,7 +25,7 @@ describe('register new user', () => {
 
     it('should throw UserRegistrationError when AuthProviderTypes.Internal and password hash is empty', async () => {
         const userRepo = dbContext.getRepository(User)
-        const service = new UserRegisterService(userRepo, new EmailVerificationService())
+        const service = new UserRegisterService(userRepo, EmailVerificationService.Factory())
         let newRegistration = new UserRegistration("Eranda", "Nandasena", "testuser@test.com", AuthProviderTypes.Internal)
 
         await expect(async () => {
@@ -48,7 +48,7 @@ describe('register new user', () => {
     it('should insert new user login if user not already registred', async () => {
 
         const userRepo = dbContext.getRepository(User)
-        const emailTransport = new EmailVerificationService()
+        const emailTransport = EmailVerificationService.Factory()
 
         // mock findOne to get exising user, set to null for continue rest of the code
         const findOneMock = jest.spyOn(userRepo, 'findOne')
@@ -80,7 +80,7 @@ describe('register new user', () => {
     it('should send verification email when the user registred with user name and password', async () => {
 
         const userRepo = dbContext.getRepository(User)
-        const emailTransport = new EmailVerificationService()
+        const emailTransport = EmailVerificationService.Factory()
 
         // mock findOne to get exising user, set to null for continue rest of the code
         const findOneMock = jest.spyOn(userRepo, 'findOne')

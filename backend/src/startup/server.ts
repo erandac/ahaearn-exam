@@ -6,7 +6,11 @@ import logger from '@earnaha/core/logger'
 
 export async function createServer(swaggerSpecPath: string, api: any): Promise<Express> {
     const server = express()
+
+    server.use(express.json())
+
     const swaggerDef = YAML.load(swaggerSpecPath)
+
     const connect = connector(api, swaggerDef, {
         onCreateRoute: (method: string, descriptor: any[]) => {
             descriptor = descriptor.concat([])
@@ -14,6 +18,7 @@ export async function createServer(swaggerSpecPath: string, api: any): Promise<E
             logger.info(`Route created for ${method}: ${descriptor.map((d: any) => d.name).join(', ')}`)
         },
     })
+
     connect(server)
     return server
 }

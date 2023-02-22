@@ -11,7 +11,7 @@ export class EmailVerification extends Model {
     public kind!: string;
 
     @Column
-    public userLoginId!: string;
+    public userLoginId!: number;
 
     @CreatedAt
     public creationDate!: Date;

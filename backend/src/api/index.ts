@@ -1,1 +1,1 @@
-export * from './user'
+export * as apiRoutes from './routes'

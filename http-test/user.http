@@ -1,0 +1,19 @@
+
+@endpoint = http://localhost:3009/api/v1
+
+###
+GET {{endpoint}}/temp-user
+
+###
+POST {{endpoint}}/user/register-internal-auth
+Content-Type: application/json
+
+{
+    "firstName": "eranda ",
+    "lastName": "nandasena ",
+    "email":"erandac@gmail.com",
+    "password":"II#udPdf7a!dY",
+    "termAndPolicy":true
+}
+
+
