@@ -8,7 +8,6 @@ import { dbContext } from '@earnaha/persistence'
 
 export class EmailVerificationService {
 
-
     public static Factory() {
         const repo = dbContext.getRepository(EmailVerification)
         return new EmailVerificationService(repo)
@@ -18,7 +17,14 @@ export class EmailVerificationService {
 
     }
 
-    public async sendEmailAddressVerification(verificationId: number, email: string, firstName: string): Promise<boolean> {
+    public async sendEmailAddressVerification(userId: number, email: string, firstName: string): Promise<boolean> {
+
+        const verificationId = crypto.randomBytes(32).toString('hex')
+        var vefification = await this.emailVerificationRepository.create({
+            verificationId,
+            kind: EmailVerificationTypes.ForgotPassword,
+            userLoginId: userId
+        })
         // TODO implement sendgrid email sending 
         return Promise.resolve(true)
     }

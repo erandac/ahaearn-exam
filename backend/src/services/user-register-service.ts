@@ -55,10 +55,24 @@ export class UserRegisterService {
             throw new UserRegistrationError(UserRegistrationError.ERROR_EMAIL_NOT_AVIALBLE, `email address not avaiable`)
         }
 
+        if (user.emailStatus != EmailStatusTypes.Validated) {
+
+            throw new UserRegistrationError(UserRegistrationError.ERROR_EMAIL_VALIDATION_REQUIRED, `email address not validated`)
+        }
+
         await this.emailVerification.sendForgotpasswordVerification(user.id, email, user.firstName)
     }
 
-    public async changePasswordByRecovery(verificationId: string, newPasswordHash: string) {
+    public async acceptPasswordChangeByRecovery(verificationId: string, newPasswordHash: string) {
+
+        if (!verificationId) {
+            throw new UserRegistrationError(UserRegistrationError.ERROR_VERIFICATION_ID_REQUIRED, `Verification id required`)
+        }
+
+        if (!newPasswordHash) {
+            throw new UserRegistrationError(UserRegistrationError.ERROR_PASSWORD_HASH_REQUIRED, `password hash required`)
+        }
+
         const userId = await this.emailVerification.getuserIdByVerificationId(verificationId)
 
         const user = await this.userLoginRepository.findByPk(userId)
@@ -66,9 +80,11 @@ export class UserRegisterService {
         if (user === null) {
             throw new UserRegistrationError(UserRegistrationError.ERROR_USER_NOT_AVAILABLE, `User not available for the verification`)
         }
+
         user.set({
             passwordHash: newPasswordHash
         })
+
         await user.save()
 
         await this.emailVerification.removeByVerificationId(verificationId)

@@ -10,22 +10,14 @@ describe("password validation", () => {
         service = new SecretValidationService();
     })
 
-    it('should thorw SecretValidationError when input is null', () => {
-        expect(() => {
-            service.validate(null!)
-        }).toThrowError(SecretValidationError)
-    })
+    const nullInputs = [null, undefined, '']
 
-    it('should thorw SecretValidationError when input is undefined', () => {
-        expect(() => {
-            service.validate(undefined!)
-        }).toThrowError(SecretValidationError)
-    })
-
-    it('should thorw SecretValidationError when input is empty', () => {
-        expect(() => {
-            service.validate("")
-        }).toThrowError(SecretValidationError)
+    nullInputs.forEach(value => {
+        it(`should thorw SecretValidationError when input is ${value}`, () => {
+            expect(() => {
+                service.validate(null!)
+            }).toThrowError(SecretValidationError)
+        })
     })
 
     it('should thorw SecretValidationError when input length less than 8', () => {

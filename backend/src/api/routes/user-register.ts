@@ -4,7 +4,7 @@ import { AuthProviderTypes, SecretValidationService, UserRegisterService, UserRe
 import asyncHandler from 'express-async-handler'
 
 
-const userRegistrationschema = joi.object(
+const userRegistrationSchema = joi.object(
     {
         firstName: joi.string().required().trim(),
         lastName: joi.string().required().trim(),
@@ -21,9 +21,15 @@ const userRegistrationschema = joi.object(
         })
     })
 
+const passwordRecoverySchema = joi.object(
+    {
+        email: joi.string().required().email().trim().lowercase()
+    })
+
 
 export const registerInternal = asyncHandler(async (req: express.Request, res: express.Response) => {
-    const result = await userRegistrationschema.validateAsync(req.body)
+
+    const result = await userRegistrationSchema.validateAsync(req.body)
     const passwordValidation = new SecretValidationService()
     const passwardHash = await passwordValidation.applyHash(result.password)
 
@@ -39,4 +45,11 @@ export const registerInternal = asyncHandler(async (req: express.Request, res: e
     res.send({ id: userId })
 })
 
+
+export const startPasswordRecovery = asyncHandler(async (req: express.Request, res: express.Response) => {
+    const result = await passwordRecoverySchema.validateAsync(req.body)
+    const registrationService = UserRegisterService.Factory()
+    await registrationService.startPasswordRecovery(result.email)
+    res.send()
+})
 
